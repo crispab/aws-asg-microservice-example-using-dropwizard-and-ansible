@@ -1,0 +1,11 @@
+---
+
+- debug:
+    var: "{{ item }}"
+  with_items:
+    - aws_asg_input
+    - _aws_lc
+    - _aws_asg
+
+- import_tasks: create-launch-configuration.yml
+- import_tasks: create-auto-scaling-group.yml

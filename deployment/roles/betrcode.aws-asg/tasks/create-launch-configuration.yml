@@ -1,0 +1,5 @@
+---
+
+- name: "Creating LC: {{ _aws_lc.name }}"
+  debug:
+    msg: "Creating lc"

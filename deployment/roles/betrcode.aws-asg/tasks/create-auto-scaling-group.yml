@@ -1,0 +1,5 @@
+---
+
+- name: "Creating ASG: {{ _aws_asg.name }}"
+  debug:
+    msg: "Creating asg"

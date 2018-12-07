@@ -29,7 +29,4 @@ Prerequisite: Docker is installed
 Stop app with *Ctrl + C*.
 
 ## How to deploy app to AWS
-Prerequisite: AWS account
-
-*TODO*
-* `ansible-playbook deploy.yml`
+See: [deployment/README.md](deployment/README.md)

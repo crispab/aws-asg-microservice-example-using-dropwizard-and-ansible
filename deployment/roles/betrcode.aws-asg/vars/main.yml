@@ -1,0 +1,15 @@
+---
+
+# These variables can/should be overridden by the user of the role.
+aws_asg_input:
+  app_name: goodtimes
+  app_version: 1.0
+
+# These variables should not need to be (but can be) overridden by the user of the role.
+# A unique ASG name ensures that the ASG will always be created, never updated.
+# (Hence the combination of variables, including timestamp.)
+_aws_asg:
+  name: "asg-{{ aws_asg_input.app_name }}-{{ aws_asg_input.app_version }}-{{ ansible_date_time.epoch }}"
+
+_aws_lc:
+  name: "lc-{{ aws_asg_input.app_name }}-{{ aws_asg_input.app_version }}-{{ ansible_date_time.epoch }}"
