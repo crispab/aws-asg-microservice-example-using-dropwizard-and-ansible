@@ -1,0 +1,21 @@
+---
+
+# Delete LC
+- name: "Find old LCs with base name: {{ _aws_lc_basename }}"
+  ec2_lc_facts:
+    region: "{{ region }}"
+  register: _old_lcs
+  tags:
+    - cleanup
+
+- name: "Delete old LCs except: {{ _aws_lc.name }}"
+  ec2_lc:
+    name: "{{ item.launch_configuration_name }}"
+    state: absent
+    region: "{{ region }}"
+  with_items: "{{ _old_lcs.launch_configurations }}"
+  when: item.launch_configuration_name != _aws_lc.name and item.launch_configuration_name is match(_aws_lc_basename + '.*')
+  loop_control:
+    label: "{{ item.launch_configuration_name }}"
+  tags:
+    - cleanup

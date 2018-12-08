@@ -1,5 +1,46 @@
 ---
 
+- set_fact:
+    _extra_tag:
+      used_by: instance
+
+- name: "Create instance SG: {{ _aws_instance_sg.name }}"
+  ec2_group:
+    name: "{{ _aws_instance_sg.name }}"
+    description: Security group for the instances
+    region: "{{ region }}"
+    vpc_id: "{{ vpc }}"
+    rules:
+      - proto: tcp
+        ports:
+          - 8080
+        group_name: "{{ _aws_sg_for_lb.name }}"
+        cidr_ip:
+          - 0.0.0.0/0  # TODO: This is unsafe, should be accessible from ELB only
+          - 217.210.218.0/24  # TODO: Replace with "your home cidr"
+      - proto: tcp
+        ports:
+          - 22
+        cidr_ip:
+          - 0.0.0.0/0  # TODO: This is unsafe
+          - 217.210.218.0/24  # TODO: Replace with "your  home cidr"
+    tags: "{{ _aws_tags_dict | combine(_extra_tag) }}"
+  register: _sg_for_instances
+  until: _sg_for_instances is success
+  #retries: 3
+  #delay: 1
+
 - name: "Creating LC: {{ _aws_lc.name }}"
-  debug:
-    msg: "Creating lc"
+  ec2_lc:
+    name: "{{ _aws_lc.name }}"
+    image_id: "{{ image_id }}"
+    key_name: "{{ aws_key }}"
+    region: "{{ region }}"
+    security_groups: ["{{ _sg_for_instances.group_id | default('') }}"]
+    instance_type: "{{ instance_type }}"
+    assign_public_ip: yes  # So we can SSH to the instances
+    user_data: "{{ user_data_content }}"
+  register: _lc
+  until: _lc is success
+  #retries: 10
+  #delay: 6

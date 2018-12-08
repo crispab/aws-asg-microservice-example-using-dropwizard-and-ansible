@@ -1,5 +1,21 @@
 ---
 
 - name: "Creating ASG: {{ _aws_asg.name }}"
-  debug:
-    msg: "Creating asg"
+  ec2_asg:
+    name: "{{ _aws_asg.name }}"
+    launch_config_name: "{{ _aws_lc.name }}"
+    health_check_period: 120
+    health_check_type: EC2  # TODO: change to ELB later?
+    wait_for_instances: no  # TODO: change to yes later?
+    wait_timeout: 300
+    min_size: 2
+    max_size: 3
+    desired_capacity: 2
+    region: "{{ region }}"
+    vpc_zone_identifier: "{{ subnets }}"
+    load_balancers: "{{ _aws_lb.name }}"
+    tags: "{{ _aws_tags }}"
+  register: _asg
+  until: _asg is success
+  #retries: 10
+  #delay: 6

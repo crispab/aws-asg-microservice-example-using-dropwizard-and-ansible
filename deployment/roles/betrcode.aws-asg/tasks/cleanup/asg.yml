@@ -1,0 +1,22 @@
+---
+
+# Delete ASG
+- name: "Find old ASGs"
+  ec2_asg_facts:
+    region: "{{ region }}"
+    tags: "{{ _aws_tags_for_cleanup }}"
+  register: _old_asgs
+  tags:
+    - cleanup
+
+- name: "Delete old ASGs except: {{ _aws_asg.name }}"
+  ec2_asg:
+    name: "{{ item.auto_scaling_group_name }}"
+    state: absent
+    region: "{{ region }}"
+  with_items: "{{ _old_asgs.results }}"
+  loop_control:
+    label: "{{ item.auto_scaling_group_name }}"
+  when: item.auto_scaling_group_name != _aws_asg.name
+  tags:
+    - cleanup

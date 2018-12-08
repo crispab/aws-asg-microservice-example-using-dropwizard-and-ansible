@@ -1,0 +1,23 @@
+---
+
+# Delete LB
+- name: "Find old LBs"
+  ec2_elb_facts:
+    region: "{{ region }}"
+  register: _old_lbs
+  tags:
+    - cleanup
+
+- name: "Delete old LBs except: {{ _aws_lb.name }}"
+  ec2_elb_lb:
+    name: "{{ item.name }}"
+    state: absent
+    region: "{{ region }}"
+    wait: yes
+  with_items: "{{ _old_lbs.elbs }}"
+  when: item.name != _aws_lb.name and item.tags.app_name == _aws_tags_dict.app_name
+  loop_control:
+    label: "{{ item.name }}"
+  tags:
+    - cleanup
+  retries: 2

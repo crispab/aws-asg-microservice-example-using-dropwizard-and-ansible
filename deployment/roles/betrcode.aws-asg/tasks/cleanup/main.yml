@@ -1,0 +1,11 @@
+---
+
+# TODO: This has a lot of complexity, and is potentially dangerous/buggy.
+# Can we use resource groups?
+# (Could use CloudFormation, to create and delete things, but don't like it.)
+
+- import_tasks: asg.yml
+- import_tasks: lc.yml
+- import_tasks: lb.yml
+- import_tasks: sg.yml
+  until: result.rc == 0

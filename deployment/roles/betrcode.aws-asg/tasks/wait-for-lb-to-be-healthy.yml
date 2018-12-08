@@ -1,0 +1,10 @@
+---
+
+- name: "Wait for load balancer to be healthy"
+  ec2_elb_facts:
+    names: "{{ _aws_lb.name }}"
+    region: "{{ region }}"
+  register: _lb_facts
+  until: _lb_facts.elbs[0].instances_inservice_count == 2
+  retries: 100
+  delay: 10

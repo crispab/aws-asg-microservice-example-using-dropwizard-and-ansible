@@ -1,0 +1,49 @@
+---
+
+- set_fact:
+    _extra_tag:
+      used_by: lb
+
+- name: "Creating security group for load balancer: {{ _aws_sg_for_lb.name }}"
+  ec2_group:
+    name: "{{ _aws_sg_for_lb.name }}"
+    description: Security group for the load balancer
+    region: "{{ region }}"
+    vpc_id: "{{ vpc }}"
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+    tags: "{{ _aws_tags_dict | combine(_extra_tag) }}"
+  register: _sg_for_lb
+  until: _sg_for_lb is success
+  #retries: 1
+  #delay: 1
+
+- name: "Creating load balancer: {{ _aws_lb.name }}"
+  ec2_elb_lb:
+    name: "{{ _aws_lb.name }}"
+    state: present
+    cross_az_load_balancing: no # need multiple subnets defined before setting this to yes
+    subnets: "{{ subnets }}"
+    region: "{{ region }}"
+    security_group_ids: "{{ _sg_for_lb.group_id }}"
+    listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_protocol: http
+        instance_port: 8080
+    health_check:
+      ping_protocol: http
+      ping_port: 8080
+      ping_path: / # TODO: change to /healthcheck when we have our own app there
+      response_timeout: 2
+      interval: 5
+      unhealthy_threshold: 2
+      healthy_threshold: 5
+    tags: "{{ _aws_tags_dict }}"
+  register: _lb
+  #until: _lb is success
+  #retries: 10
+  #delay: 6

@@ -1,0 +1,23 @@
+---
+
+- name: "Find DNS name of new LB"
+  ec2_elb_facts:
+    region: "{{ region }}"
+    names: "{{ _aws_lb.name }}"
+  register: _new_lb
+  tags:
+    - update-dns
+
+- name: "Update DNS to point to new LB"
+  route53:
+    state: present
+    overwrite: yes
+    zone: "{{ route53_zone }}"
+    record: "{{ aws_asg_input.app_name }}.{{ route53_zone }}"
+    type: A
+    value: "{{ _new_lb.elbs[0].dns_name }}"
+    alias: True
+    alias_hosted_zone_id: "{{ _new_lb.elbs[0].hosted_zone_id }}"
+  register: _dns
+  tags:
+    - update-dns

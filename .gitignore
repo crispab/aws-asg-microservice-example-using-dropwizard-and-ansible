@@ -6,3 +6,6 @@ build
 
 # Ignore IDEA settings dir
 .idea
+
+# Ignore Ansible retry files
+*.retry

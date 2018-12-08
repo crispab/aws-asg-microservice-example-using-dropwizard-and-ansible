@@ -1,0 +1,25 @@
+---
+
+# Delete SGs
+- name: "Find old SGs"
+  ec2_group_facts:
+    region: "{{ region }}"
+    filters:
+      tag:app_name="{{ _aws_tags_dict.app_name }}"
+  register: _old_sgs
+  tags:
+    - cleanup
+
+# TODO: Do we need to sort/retry to delete in the correct order?
+- name: "Delete old SGs except: {{ _aws_instance_sg.name }} and {{ _aws_sg_for_lb.name }}"
+  ec2_group:
+    region: "{{ region }}"
+    name: "{{ item.group_name }}"
+    state: absent
+  with_items: "{{ _old_sgs.security_groups + _old_sgs.security_groups }}"
+  when: item.group_name != _aws_instance_sg.name and item.group_name != _aws_sg_for_lb.name
+  loop_control:
+    label: "{{ item.group_name }}"
+  retries: 2
+  tags:
+    - cleanup
