@@ -5,8 +5,8 @@
     name: "{{ _aws_asg.name }}"
     launch_config_name: "{{ _aws_lc.name }}"
     health_check_period: 120
-    health_check_type: EC2  # TODO: change to ELB later?
-    wait_for_instances: no  # TODO: change to yes later?
+    health_check_type: ELB
+    wait_for_instances: yes
     wait_timeout: 300
     min_size: 2
     max_size: 3
