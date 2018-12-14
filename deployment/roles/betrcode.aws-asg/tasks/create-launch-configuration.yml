@@ -14,6 +14,7 @@
       - proto: tcp
         ports:
           - 8080
+          - 8081
         group_name: "{{ _aws_sg_for_lb.name }}"
         cidr_ip:
           - 0.0.0.0/0  # TODO: This is unsafe, should be accessible from ELB only
@@ -34,6 +35,7 @@
   ec2_lc:
     name: "{{ _aws_lc.name }}"
     image_id: "{{ image_id }}"
+    instance_profile_name: "{{ instance_profile }}"
     key_name: "{{ aws_key }}"
     region: "{{ region }}"
     security_groups: ["{{ _sg_for_instances.group_id | default('') }}"]

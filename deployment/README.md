@@ -28,6 +28,7 @@ Required parameters:
 * `subnets` - the subnets to deploy to (needs to exist already)
 * `aws_key` - the instance key which can be used to log in to the created instances (needs to exist already)
 * `route53_zone` - the Route 53 zone where you want to create your DNS entry. (needs to exist already)
+* `instance_profile` - the name of the instance profile (or IAM Role) that the created instances will get. (needs to exist already)
 
 Required environment variables:
 * `AWS_ACCESS_KEY_ID`

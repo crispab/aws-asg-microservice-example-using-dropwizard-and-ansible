@@ -17,7 +17,7 @@ public class GoodTimesApp extends Application<GoodTimesConfiguration> {
   @Override
   public void run(GoodTimesConfiguration configuration, Environment environment) {
     log.info("Running");
-    // nothing to do yet
+    environment.jersey().register(GoodTimesResource.class);
   }
 
   public static void main(String[] args) throws Exception {

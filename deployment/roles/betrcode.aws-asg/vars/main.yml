@@ -15,7 +15,9 @@ subnets: []
 aws_key: ""
 instance_type: t2.small
 image_id: ami-07c3a868617f8acdb  # TODO: Find the newest AWS Linux 2 AMI dynamically
+instance_profile: ""
 route53_zone: bettercode.se
+docker_image: nginx
 
 # ?
 user_data_content: "{{ lookup('template', 'userdata.sh') }}"

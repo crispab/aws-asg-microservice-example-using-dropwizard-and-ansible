@@ -36,8 +36,8 @@
         instance_port: 8080
     health_check:
       ping_protocol: http
-      ping_port: 8080
-      ping_path: / # TODO: change to /healthcheck when we have our own app there
+      ping_port: 8081
+      ping_path: /healthcheck
       response_timeout: 2
       interval: 5
       unhealthy_threshold: 2

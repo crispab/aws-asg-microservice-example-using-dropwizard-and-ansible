@@ -1,0 +1,34 @@
+---
+
+- name: Create ECR repository
+  ecs_ecr:
+    name: betrcode/goodtimes
+    region: "{{ region }}"
+  register: _ecr
+  tags:
+    - ecr
+
+- debug:
+    var: _ecr
+  tags:
+    - ecr
+
+- set_fact:
+    _tag: "{{ _ecr.repository.repositoryUri }}:latest"
+  tags:
+    - ecr
+
+- name: Tag image with repository
+  command: docker tag betrcode/goodtimes:latest "{{ _tag }}"
+  tags:
+    - ecr
+
+- name: ECR login
+  shell: "$(aws ecr get-login --no-include-email --region {{ region }})"
+  tags:
+    - ecr
+
+- name: Push image
+  command: docker push "{{ _tag }}"
+  tags:
+    - ecr
