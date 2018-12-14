@@ -48,6 +48,9 @@ run {
 }
 
 jib {
+    to {
+        image = 'betrcode/goodtimes'
+    }
     container {
         args = ['server', 'goodtimes-config.yml']
     }
