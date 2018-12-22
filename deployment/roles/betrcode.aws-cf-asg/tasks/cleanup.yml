@@ -1,0 +1,31 @@
+---
+
+- name: "Find all stacks"
+  cloudformation_facts:
+  register: _all_stacks
+  tags: [cleanup]
+
+- debug:
+    var: _all_stacks
+  tags: [cleanup]
+
+- debug:
+    msg: "{{ _all_stacks.ansible_facts.cloudformation.values() }}"
+  tags: [cleanup]
+
+- set_fact:
+    _stack_names: "{{ _all_stacks.ansible_facts.cloudformation.values() }}"
+  tags: [cleanup]
+
+- debug:
+    var: _stack_names
+  tags: [cleanup]
+
+- name: "Delete old stacks"
+  cloudformation:
+    stack_name: "{{ item }}"
+    state: absent
+    region: "{{ region }}"
+  when: item != _aws_stack.name
+  with_items: "{{ _stack_names }}"
+  tags: [cleanup]
