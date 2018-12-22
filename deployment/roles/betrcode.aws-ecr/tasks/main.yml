@@ -2,7 +2,7 @@
 
 - name: Create ECR repository
   ecs_ecr:
-    name: betrcode/goodtimes
+    name: "{{ ecr_name }}"
     region: "{{ region }}"
   register: _ecr
   tags:
@@ -19,7 +19,7 @@
     - ecr
 
 - name: Tag image with repository
-  command: docker tag betrcode/goodtimes:latest "{{ _tag }}"
+  command: docker tag "{{ source_image_tag }}" "{{ _tag }}"
   tags:
     - ecr
 

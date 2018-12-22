@@ -1,0 +1,4 @@
+---
+
+ecr_name: betrcode/goodtimes
+source_image_tag: betrcode/goodtimes:latest
