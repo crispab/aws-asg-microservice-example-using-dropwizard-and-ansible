@@ -21,6 +21,3 @@
       ASGName: "{{ _aws_asg.name }}"
       TGName: "{{ _aws_tg.name }}"
   register: _stack
-
-- debug:
-    var: _stack
