@@ -158,11 +158,11 @@
       "Properties" : {
         "DefaultActions" : [
           {
-            "TargetGroupArn" : { "Ref" :  "TG" },
+            "TargetGroupArn" : { "Ref" : "TG" },
             "Type" : "forward"
           }
         ],
-        "LoadBalancerArn" : { "Ref" :  "ELB"},
+        "LoadBalancerArn" : { "Ref" : "ELB"},
         "Port" : 80,
         "Protocol" : "HTTP"
       },
@@ -178,6 +178,9 @@
     },
     "ELB" : {
       "Value" : { "Ref" : "ELB" }
+    },
+    "ELBDNSName" : {
+      "Value" : { "Fn::GetAtt" : [ "ELB", "DNSName" ]}
     },
     "TG" : {
       "Value" : { "Ref" : "TG" }

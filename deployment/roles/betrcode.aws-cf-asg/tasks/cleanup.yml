@@ -2,30 +2,17 @@
 
 - name: "Find all stacks"
   cloudformation_facts:
+    region: "{{ region }}"
   register: _all_stacks
   tags: [cleanup]
 
-- debug:
-    var: _all_stacks
-  tags: [cleanup]
-
-- debug:
-    msg: "{{ _all_stacks.ansible_facts.cloudformation.values() }}"
-  tags: [cleanup]
-
-- set_fact:
-    _stack_names: "{{ _all_stacks.ansible_facts.cloudformation.values() }}"
-  tags: [cleanup]
-
-- debug:
-    var: _stack_names
-  tags: [cleanup]
-
-- name: "Delete old stacks"
+- name: "Delete old stacks"  # Parsing the result from the cloudformation module is not simple.
   cloudformation:
-    stack_name: "{{ item }}"
+    stack_name: "{{ item.key }}"
     state: absent
     region: "{{ region }}"
-  when: item != _aws_stack.name
-  with_items: "{{ _stack_names }}"
+  when: item.key != _aws_stack.name
+  loop: "{{ lookup('dict', _all_stacks.ansible_facts.cloudformation, wantlist=True) }}"
+  loop_control:
+    label: "{{ item.key }}"
   tags: [cleanup]
