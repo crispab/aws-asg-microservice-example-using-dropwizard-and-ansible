@@ -1,0 +1,20 @@
+---
+
+# These variables can/should be overridden by the user of the role.
+aws_asg_input:
+  app_name: goodtimes
+  app_version: 1x0 # TODO: Must not contain dots. Handle it!
+
+# These variables should/must be overridden by the user of the role
+vpc: ""
+region: "eu-west-1"
+subnets: []
+aws_key: ""
+instance_type: t2.small
+image_id: ami-07c3a868617f8acdb  # TODO: Find the newest AWS Linux 2 AMI dynamically
+instance_profile: ""
+route53_zone: bettercode.se
+docker_image: nginx
+
+# ?
+user_data_content: "{{ lookup('template', 'userdata.sh') }}"
