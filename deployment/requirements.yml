@@ -1,0 +1,3 @@
+# from galaxy
+- src: betrcode.aws_cloudformation_asg
+  version: 0.0.3

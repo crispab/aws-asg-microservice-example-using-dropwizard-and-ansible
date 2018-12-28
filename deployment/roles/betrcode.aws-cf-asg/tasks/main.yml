@@ -1,5 +1,0 @@
----
-
-- import_tasks: cloudformation.yml
-- import_tasks: update-dns.yml
-- import_tasks: cleanup.yml

@@ -93,6 +93,9 @@ The main benefit of this is that *all* infrastructure is replaced on every deplo
 
 ### How to deploy
 
+Before using the playbook for the first time, you need to install the required roles.
+Run: `./install-requirements.sh`
+
 Required parameters:
 
 * `vpc` - the AWS VPC identifier (your vpc)
