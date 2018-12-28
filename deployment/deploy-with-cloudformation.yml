@@ -4,6 +4,6 @@
   connection: local
   gather_facts: yes  # needed for ansible_date_time
   roles:
-    - role: betrcode.aws-ecr
+    - role: betrcode.aws_ecr_docker_push
     - role: betrcode.aws_cloudformation_asg
       docker_image: "{{ _tag }}" # Coming from previous role
