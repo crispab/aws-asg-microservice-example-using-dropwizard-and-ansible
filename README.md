@@ -15,12 +15,15 @@ I am using some of my current favourite languages, tools and frameworks:
 * Google JIB for building a Docker image
 * Ansible for setting up AWS infrastructure and deploying
 
+
 ## How to run app using Gradle
 `./gradlew run`
 
 Stop app with *Ctrl + C*.
 
+
 ## How to build Docker image and run it
+
 Prerequisite: Docker is installed
 
 * `./gradlew jibDockerBuild`
@@ -28,5 +31,7 @@ Prerequisite: Docker is installed
 
 Stop app with *Ctrl + C*.
 
+
 ## How to deploy app to AWS
+
 See: [deployment/README.md](deployment/README.md)
