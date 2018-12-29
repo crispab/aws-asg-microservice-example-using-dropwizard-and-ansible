@@ -1,5 +1,5 @@
 # from galaxy
 - src: betrcode.aws_cloudformation_asg
-  version: 0.0.4
+  version: 0.0.5
 - src: betrcode.aws_ecr_docker_push
   version: 0.0.3
