@@ -65,10 +65,10 @@ Required environment variables:
 
 (or other way of authenticating)
 
-Example command: `ansible-playbook deploy-with-cloudformation.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=[subnet-171bf888,subnet-171bf889] route53_zone=bettercode.se"`
+Example command: `ansible-playbook deploy.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=[subnet-171bf888,subnet-171bf889] route53_zone=bettercode.se"`
 
 Or, if you (like me) put your variables in a file:
-`ansible-playbook deploy-with-cloudformation.yml --extra-vars @vars/betrcode-extra-vars.yml`
+`ansible-playbook deploy.yml --extra-vars @vars/betrcode-extra-vars.yml`
 
 
 #### To delete all created resources
@@ -77,4 +77,4 @@ To delete all resources created by this playbook,
 run the playbook with the `cleanup` tag. This will not create
 any new resources and will delete all old resources. 
 
-Example: `ansible-playbook deploy-with-cloudformation.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=[subnet-171bf888,subnet-171bf889] route53_zone=bettercode.se" --tags cleanup`
+Example: `ansible-playbook deploy.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=[subnet-171bf888,subnet-171bf889] route53_zone=bettercode.se" --tags cleanup`
