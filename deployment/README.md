@@ -1,66 +1,17 @@
 # Deployment
 
-This folder contains Ansible scripts to deploy the service
+This folder contains a Ansible playbook to deploy the service
 to a AWS AutoScalingGroup.
 
 Prerequisite: AWS account
 
-I've implemented two different ways to to this. See the two roles
-`betrcode.aws-asg` and `betrcode.aws-cf-asg`.
+The Ansible roles used in the playbook can be found in the following repositories:
+* https://github.com/betrcode/ansible_role_aws_ecr_docker_push
+* https://github.com/betrcode/ansible-role-aws-cloudformation-asg
 
-## Not using CloudFormation (betrcode.aws-asg)
-
-In this first implementation, I just used Ansible modules to create all the needed AWS resources,
-and used naming conventions and tags to indicate which resources belong to the same "stack".
-
-This was possible, and nice to not need to use the (awful?) CloudFormation format. But it has downsides.
-The main downside is probably the cumbersome cleanup (deletion) of resources by name or tag. It would
-be easy to screw up and delete the wrong thing.
-
-This led me to try the same thing, but using CloudFormation instead. See *Using CloudFormation* below.
-
-
-### Overview of how it works
-
-Every time the playbook is run it will:
-
-* Create a new load balancer
-* Create a new launch configuration
-* Create a new autoscaling group
-* Wait for the new load balancer to report n healthy instances
-* Create/update the DNS alias to point to the new load balancer
-* Delete (cleanup) any old resources (previously created by this playbook)
-
-The main benefit of this is that *all* infrastructure is replaced on every deployment.
- 
-
-### How to deploy
-
-Required parameters:
-
-* `vpc` - the AWS VPC identifier (your vpc)
-* `region` - the AWS region to deploy to (example: eu-west-1)
-* `subnets` - a list of subnets to deploy to. Must be at least 2. (needs to exist already)
-* `aws_key` - the instance key which can be used to log in to the created instances (needs to exist already)
-* `route53_zone` - the Route 53 zone where you want to create your DNS entry. (needs to exist already)
-* `instance_profile` - the name of the instance profile (or IAM Role) that the created instances will get. (needs to exist already)
-
-Required environment variables:
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-
-(or other way of authenticating)
-
-Example command: `ansible-playbook deploy.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=subnet-171bf888 route53_zone=bettercode.se"`
-
-
-#### To delete all created resources
-
-To delete all resources created by this playbook, 
-run the playbook with the `cleanup` tag. This will not create
-any new resources and will delete all old resources. 
-
-Example: `ansible-playbook deploy.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=subnet-171bf888 route53_zone=bettercode.se" --tags cleanup`
+...and published to Ansible Galaxy:
+* https://galaxy.ansible.com/betrcode/aws_ecr_docker_push
+* https://galaxy.ansible.com/betrcode/aws_cloudformation_asg
 
 
 ## Using CloudFormation (betrcode.aws-cf-asg)
@@ -105,13 +56,20 @@ Required parameters:
 * `route53_zone` - the Route 53 zone where you want to create your DNS entry. (needs to exist already)
 * `instance_profile` - the name of the instance profile (or IAM Role) that the created instances will get. (needs to exist already)
 
+You can define these in a file like: `vars/betrcode-extra-vars.yml`
+
+
 Required environment variables:
 * `AWS_ACCESS_KEY_ID`
 * `AWS_SECRET_ACCESS_KEY`
 
 (or other way of authenticating)
 
-Example command: `ansible-playbook deploy-with-cloudformation.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=subnet-171bf888 route53_zone=bettercode.se"`
+Example command: `ansible-playbook deploy-with-cloudformation.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=[subnet-171bf888,subnet-171bf889] route53_zone=bettercode.se"`
+
+Or, if you (like me) put your variables in a file:
+`ansible-playbook deploy-with-cloudformation.yml --extra-vars @vars/betrcode-extra-vars.yml`
+
 
 #### To delete all created resources
 
@@ -119,4 +77,4 @@ To delete all resources created by this playbook,
 run the playbook with the `cleanup` tag. This will not create
 any new resources and will delete all old resources. 
 
-Example: `ansible-playbook deploy-with-cloudformation.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=subnet-171bf888 route53_zone=bettercode.se" --tags cleanup`
+Example: `ansible-playbook deploy-with-cloudformation.yml -e "vpc=vpc-8eb15888 aws_key=betrcode-amazon region=eu-central-1 subnets=[subnet-171bf888,subnet-171bf889] route53_zone=bettercode.se" --tags cleanup`
