@@ -1,4 +1,4 @@
-package se.bettercode.goodtimes;
+package se.crisp.goodtimes;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;

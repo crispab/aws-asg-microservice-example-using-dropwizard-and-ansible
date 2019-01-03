@@ -1,4 +1,4 @@
-package se.bettercode.goodtimes;
+package se.crisp.goodtimes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

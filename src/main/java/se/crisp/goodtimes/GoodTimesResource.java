@@ -1,4 +1,4 @@
-package se.bettercode.goodtimes;
+package se.crisp.goodtimes;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

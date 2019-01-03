@@ -23,9 +23,9 @@ dependencies {
     def dropwizardVersion = '1.3.7'
     def lombokVersion = '1.18.4'
 
-    compileOnly 'org.projectlombok:lombok:1.18.4'
+    compileOnly 'org.projectlombok:lombok:' + lombokVersion
 
-    apt 'org.projectlombok:lombok:1.18.4'
+    apt 'org.projectlombok:lombok:' + lombokVersion
 
     // This dependency is found on compile classpath of this component and consumers.
     implementation 'com.google.guava:guava:26.0-jre'
@@ -41,7 +41,7 @@ compileJava {
 }
 
 // Define the main class for the application
-mainClassName = 'se.bettercode.goodtimes.GoodTimesApp'
+mainClassName = 'se.crisp.goodtimes.GoodTimesApp'
 
 run {
     args = ['server', 'src/test/resources/local-config.yml']
@@ -49,7 +49,7 @@ run {
 
 jib {
     to {
-        image = 'betrcode/goodtimes'
+        image = 'crisp/goodtimes'
     }
     container {
         args = ['server', 'goodtimes-config.yml']
