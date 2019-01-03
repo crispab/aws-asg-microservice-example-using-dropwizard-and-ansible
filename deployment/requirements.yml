@@ -1,5 +1,5 @@
 # from galaxy
-- src: betrcode.aws_cloudformation_asg
-  version: 0.0.7
-- src: betrcode.aws_ecr_docker_push
-  version: 0.0.4
+- src: crisp.aws_cloudformation_asg
+  version: 0.0.8
+- src: crisp.aws_ecr_docker_push
+  version: 0.0.5
