@@ -9,7 +9,7 @@ plugins {
     id 'net.ltgt.apt' version '0.10'
 
     // For Google JIB plugin to build docker image
-    id 'com.google.cloud.tools.jib' version '0.10.1'
+    id 'com.google.cloud.tools.jib' version '1.0.0'
 }
 
 repositories {
